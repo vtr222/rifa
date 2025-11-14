@@ -79,7 +79,6 @@ new Vue({
     vendasPorResponsavel() {
       return this.numeros.reduce(
         (acc, x) => {
-          console.log(x.responsavel);
           if (x.responsavel) {
             acc[x.responsavel]++;
           }
@@ -135,7 +134,6 @@ new Vue({
       clearTimeout(this.alert.timeoutId);
       this.alert.timeoutId = setTimeout(() => {
         this.alert.show = false;
-        console.log(this.alert);
       }, 3000);
     },
 
@@ -157,7 +155,6 @@ new Vue({
           });
           json.forEach((n) => {
             if (n.data) {
-              console.log(n.data);
               n.data = excelDateToJSDate(n.data);
             }
           });
@@ -217,7 +214,6 @@ new Vue({
     adicionarNaRifa() {
       const novosNumeros = parseInt(this.config.numerosDisponiveis);
 
-      console.log(novosNumeros, this.config.numerosDisponiveis);
       if (isNaN(novosNumeros)) {
         return this.showAlert("error", "número inválido");
       }
@@ -274,8 +270,8 @@ new Vue({
         this.numeros[sorteado].data = this.form.data;
         this.numeros[sorteado].responsavel = this.form.responsavel;
       });
-      this.showAlert("success", `sorteado e registrado uhuuuu`);
-      copiarMensagemZap(this.form.nome);
+      this.showAlert("success", `sorteado e registrado uhuuuu. A mensagem do whatsapp está no seu ctrl+c`);
+      this.copiarMensagemZap(this.form.nome);
       this.form.nome = "";
       this.form.tel = "";
       this.form.qtd = 1;
@@ -284,7 +280,6 @@ new Vue({
         .split("T")[0];
       this.form.responsavel = "";
 
-      console.log(numerosSorteados);
     },
   },
 });

@@ -22,7 +22,7 @@
       <header class="flex w-full justify-end  gap-3">
         <button class="text-xs relative ">
           Importar backup
-          <input type="file"  accept=".xlsx,.xls,.csv" @change="handleBackupFile"
+          <input type="file" accept=".xlsx,.xls,.csv" @change="handleBackupFile"
             class="cursor-pointer absolute top-0 left-0 h-full w-full opacity-0" />
         </button>
 
@@ -70,7 +70,7 @@
                   <td class="text-center">
                     {{compra?.responsavel}}
                   </td>
-                  <td class="!border-none cursor-pointer" @click="copiarMensagemZap(compra?.nome)">
+                  <td class="!border-none cursor-pointer" @click="() => {showAlert('success', 'mensagem copiada no seu ctrl+c'); copiarMensagemZap(compra?.nome) }">
                     <img v-if="compra?.nome" src="zap.png" width="20" />
                   </td>
                 </tr>
@@ -81,7 +81,7 @@
 
         </template>
         <template v-if="tab === 1">
-          <div  v-if="numeros.length"  class="flex flex-col m-auto gap-2">
+          <div v-if="numeros.length" class="flex flex-col m-auto gap-2">
             <div>
               <span class="w-35 inline-block text-right">Nome comprador:</span>
 
@@ -112,7 +112,7 @@
               Salvar
             </button>
           </div>
-            <i v-else>~~Rifa sem números, adicione nas configurações~~</i>
+          <i v-else>~~Rifa sem números, adicione nas configurações~~</i>
 
         </template>
         <template v-if="tab === 2">
