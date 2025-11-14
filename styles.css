@@ -4,7 +4,11 @@ body {
   height: 100vh;
   width: 100vw;
 }
-
+@media (max-width: 768px) {
+  body {
+    display: block; /* or whatever layout you prefer */
+  }
+}
 
 button {
     background-color: rgb(199, 199, 199);
