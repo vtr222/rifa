@@ -83,32 +83,32 @@
         <template v-if="tab === 1">
           <div v-if="numeros.length" class="flex flex-col m-auto gap-2">
             <div>
-              <span class="w-35 inline-block text-right">Nome comprador:</span>
+              <span class="w-45 inline-block text-right">Nome comprador:</span>
 
               <input type="text" v-model="form.nome" />
             </div>
             <div>
-              <span class="w-35 inline-block text-right">Telefone:</span>
+              <span class="w-45 inline-block text-right">Telefone:</span>
 
               <input type="text" v-model="form.tel" />
             </div>
             <div>
-              <span class="w-35 inline-block text-right">Quantidade números:</span>
+              <span class="w-45 inline-block text-right">Quantidade de números:</span>
 
               <input type="number" max="1000" min="1" v-model="form.qtd" />
             </div>
             <div>
-              <span class="w-35 inline-block text-right">Responsável:</span>
+              <span class="w-45 inline-block text-right">Responsável:</span>
               <select v-model="form.responsavel">
                 <option v-for="res of responsaveis">{{res}}</option>
               </select>
             </div>
             <div>
-              <span class="w-35 inline-block text-right">Data venda:</span>
+              <span class="w-45 inline-block text-right">Data venda:</span>
               <input type="date" v-model="form.data" />
 
             </div>
-            <button class="w-32 ml-30 mt-4" @click="registraVenda()">
+            <button class="w-42 ml-30 mt-4" @click="registraVenda()">
               Salvar
             </button>
           </div>
