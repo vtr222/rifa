@@ -1,0 +1,73 @@
+body {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+
+button {
+    background-color: rgb(199, 199, 199);
+    padding: 6px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.tab {
+    padding: 12px;
+    border-bottom: 2px solid rgb(105, 142, 124);
+    cursor: pointer;
+    flex-grow: 1;
+}
+.tab.active {
+    font-weight: bold;
+    color: white;
+    background-color: rgb(105, 142, 124);
+}
+
+td,th {
+    padding: 4px;
+}
+th {
+    background-color: white;
+    z-index: 2;
+}
+
+tr:nth-child(odd){
+    background-color: rgb(230, 228, 228);
+}
+
+.warn {
+    background-color: rgb(255, 193, 79);
+    border: 2px solid rgb(225, 154, 23)
+}
+
+.error {
+    background-color: rgb(249, 100, 45);
+    border: 2px solid rgb(225, 43, 23)
+}
+
+.success {
+    background-color: rgb(102, 220, 111);
+    border: 2px solid rgb(49, 102, 22)
+}
+
+label {
+    font-weight: bold;
+}
+
+input,textarea, select {
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    padding: 2px 5px;
+    font-weight: 400;
+    margin-left: 6px;
+}
+
+textarea {
+    margin-left: 8px;
+    width: 500px;
+    height: 200px;
+    resize: none;
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Palpitão</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.14/vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div id="app">
+
+    <div v-if="alert.show" class="fixed right-0 top-2 w-100 flex items-center font-bold px-4 py-1 z-2 flex items-center"
+      :class="alert.type">
+      {{alert.content}}
+    </div>
+    <div class="w-3xl shadow-md p-4 flex flex-col gap-4">
+      <header class="flex w-full justify-end  gap-3">
+        <button class="text-xs relative ">
+          Importar backup
+          <input type="file"  accept=".xlsx,.xls,.csv" @change="handleBackupFile"
+            class="cursor-pointer absolute top-0 left-0 h-full w-full opacity-0" />
+        </button>
+
+      </header>
+      <section class="w-full">
+        <div class="flex w-full ">
+          <div class="tab" @click="setTab(0)" :class="tab === 0 && 'active'">Números</div>
+          <div class="tab" @click="setTab(1)" :class="tab === 1 && 'active'">Registrar venda</div>
+          <div class="tab" @click="setTab(2)" :class="tab === 2 && 'active'">Configurações</div>
+          <div class="tab" @click="setTab(3)" :class="tab === 3 && 'active'">$$$</div>
+        </div>
+      </section>
+      <main>
+        <template v-if="tab === 0">
+          <div class="relative max-h-128 overflow-auto">
+            <table v-if="numeros.length" class="w-full">
+              <thead class="sticky top-0">
+                <tr>
+                  <th></th>
+                  <th class="text-left">Nome</th>
+                  <th>Telefone</th>
+                  <th>Data compra</th>
+                  <th>Responsável</th>
+                  <th class="!border-none cursor-pointer">
+                    <img v-if="numeros.length" src="excel.png" width="20" @click="exportaExcel()" />
+
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr v-for="(compra,i) of numeros">
+                  <td :class="compra?.nome ? '' : 'text-white bg-green-700'" class="text-center font-bold">
+                    {{i + 1}}
+                  </td>
+                  <td class="text-sm max-w-30 truncate ">
+                    {{compra?.nome}}
+                  </td>
+                  <td class="text-center">
+                    {{compra?.tel}}
+                  </td>
+                  <td class="text-center">
+                    {{compra?.data ? compra.data.split('-').reverse().join('/'): ''}}
+                  </td>
+                  <td class="text-center">
+                    {{compra?.responsavel}}
+                  </td>
+                  <td class="!border-none cursor-pointer" @click="copiarMensagemZap(compra?.nome)">
+                    <img v-if="compra?.nome" src="zap.png" width="20" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <i v-else>~~Rifa sem números, adicione nas configurações~~</i>
+          </div>
+
+        </template>
+        <template v-if="tab === 1">
+          <div  v-if="numeros.length"  class="flex flex-col m-auto gap-2">
+            <div>
+              <span class="w-35 inline-block text-right">Nome comprador:</span>
+
+              <input type="text" v-model="form.nome" />
+            </div>
+            <div>
+              <span class="w-35 inline-block text-right">Telefone:</span>
+
+              <input type="text" v-model="form.tel" />
+            </div>
+            <div>
+              <span class="w-35 inline-block text-right">Quantidade números:</span>
+
+              <input type="number" max="1000" min="1" v-model="form.qtd" />
+            </div>
+            <div>
+              <span class="w-35 inline-block text-right">Responsável:</span>
+              <select v-model="form.responsavel">
+                <option v-for="res of responsaveis">{{res}}</option>
+              </select>
+            </div>
+            <div>
+              <span class="w-35 inline-block text-right">Data venda:</span>
+              <input type="date" v-model="form.data" />
+
+            </div>
+            <button class="w-32 ml-30 mt-4" @click="registraVenda()">
+              Salvar
+            </button>
+          </div>
+            <i v-else>~~Rifa sem números, adicione nas configurações~~</i>
+
+        </template>
+        <template v-if="tab === 2">
+          <div class="flex flex-col m-auto gap-2">
+            <div>
+              <span class="w-50 inline-block text-right">Preço do número:</span>
+
+              <input type="number" max="1000" class="w-12" v-model="config.precoRifa" />
+            </div>
+            <div>
+              <span class="w-50 inline-block text-right">Adicionar números na rifa:</span>
+
+              <input type="number" max="1000" class="w-12" v-model="config.numerosDisponiveis" />
+              <button @click="adicionarNaRifa()">Adicionar</button>
+            </div>
+            <div class="flex items-center">
+              <span class="w-50 inline-block text-right">Template mensagem whats:</span>
+
+              <textarea v-model="config.templateMensagem"></textarea>
+            </div>
+          </div>
+        </template>
+        <template v-if="tab === 3">
+          <div class="flex flex-col gap-4">
+
+            <div class="flex gap-2 items-baseline">
+              <span>Total vendido:</span>
+              <div class="font-bold text-2xl text-green-700">{{totalVendido}}</div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th class="text-left">Responsável</th>
+                  <th>Vendas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="res of responsaveis">
+                  <td>{{res}}</td>
+                  <td class="text-center">{{vendasPorResponsavel[res]}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </template>
+      </main>
+    </div>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
