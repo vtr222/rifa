@@ -198,12 +198,13 @@ new Vue({
       }
       const numeros = this.numeros
         .map((x, i) => {
-          if (nome === x?.nome) {
+          if (nome?.trim() === x?.nome?.trim()) {
             return i + 1;
           }
+        
         })
         .filter((x) => x)
-        .join(",");
+        .join(", ");
       navigator.clipboard.writeText(
         this.config.templateMensagem
           .replaceAll("$NUMERO", numeros)
@@ -265,13 +266,13 @@ new Vue({
       }
 
       numerosSorteados.forEach((sorteado) => {
-        this.numeros[sorteado].nome = this.form.nome;
-        this.numeros[sorteado].tel = this.form.tel;
-        this.numeros[sorteado].data = this.form.data;
-        this.numeros[sorteado].responsavel = this.form.responsavel;
+        this.numeros[sorteado].nome = this.form.nome?.trim();
+        this.numeros[sorteado].tel = this.form.tel?.trim();
+        this.numeros[sorteado].data = this.form.data?.trim();
+        this.numeros[sorteado].responsavel = this.form.responsavel?.trim();
       });
       this.showAlert("success", `sorteado e registrado uhuuuu. A mensagem do whatsapp está no seu ctrl+c`);
-      this.copiarMensagemZap(this.form.nome);
+      this.copiarMensagemZap(this.form.nome?.trim());
       this.form.nome = "";
       this.form.tel = "";
       this.form.qtd = 1;
