@@ -189,7 +189,7 @@ new Vue({
       XLSX.writeFile(workbook, `backup-${ts}.xlsx`);
     },
 
-    copiarMensagemZap(nome) {
+    copiarMensagemZap(nome, tel) {
       if (!this.config.templateMensagem) {
         return this.showAlert(
           "warn",
@@ -198,7 +198,7 @@ new Vue({
       }
       const numeros = this.numeros
         .map((x, i) => {
-          if (nome?.trim() === x?.nome?.trim()) {
+          if (nome?.trim() === x?.nome?.trim() && normalizePhone(tel?.trim()) === normalizePhone(x?.tel?.trim())) {
             return i + 1;
           }
         
@@ -272,7 +272,7 @@ new Vue({
         this.numeros[sorteado].responsavel = this.form.responsavel?.trim();
       });
       this.showAlert("success", `sorteado e registrado uhuuuu. A mensagem do whatsapp está no seu ctrl+c`);
-      this.copiarMensagemZap(this.form.nome?.trim());
+      this.copiarMensagemZap(this.form.nome?.trim(), this.form.tel?.trim());
       this.form.nome = "";
       this.form.tel = "";
       this.form.qtd = 1;
@@ -299,4 +299,8 @@ function excelDateToJSDate(serial) {
 function jsDateToExcel(dateString) {
   const date = new Date(dateString); // JS Date
   return (date - new Date(Date.UTC(1899, 11, 30))) / 86400000;
+}
+
+function normalizePhone(str) {
+  return str.replace(/\D/g, '');
 }

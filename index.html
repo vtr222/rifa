@@ -71,7 +71,7 @@
                   <td class="text-center">
                     {{compra?.responsavel}}
                   </td>
-                  <td class="!border-none cursor-pointer" @click="() => {showAlert('success', 'mensagem copiada no seu ctrl+c'); copiarMensagemZap(compra?.nome) }">
+                  <td class="!border-none cursor-pointer" @click="() => {showAlert('success', 'mensagem copiada no seu ctrl+c'); copiarMensagemZap(compra?.nome, compra?.tel) }">
                     <img v-if="compra?.nome" src="zap.png" width="20" />
                   </td>
                 </tr>
