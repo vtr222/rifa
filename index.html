@@ -141,7 +141,8 @@
 
             <div class="flex gap-2 items-baseline">
               <span>Total vendido:</span>
-              <div class="font-bold text-2xl text-green-700">{{totalVendido}}</div>
+              <div class="font-bold text-2xl text-green-700">{{totalVendido}} </div>
+              <span> {{numeros.filter(x => x?.nome).length}} / {{numeros.length}}</span>
             </div>
             <table>
               <thead>
